@@ -21,6 +21,8 @@ import (
 	ext_v1beta1 "k8s.io/client-go/pkg/apis/extensions/v1beta1"
 )
 
+var kedgeSpecVersion = "v1.7.x"
+
 // VolumeClaim is used to define Persistent Volumes for app
 type VolumeClaim struct {
 	// Data from the kubernetes persistent volume claim spec
@@ -98,6 +100,8 @@ type SecretMod struct {
 
 // App defines the complete kedge application
 type App struct {
+	// The Kubernetes version for which the application has been defined
+	KubernetesVersion string `json:"kubernetesVersion,omitempty"`
 	// Name of the micro-service
 	Name string `json:"name"`
 	// Map of string keys and values that can be used to organize and categorize

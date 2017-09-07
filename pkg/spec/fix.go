@@ -23,8 +23,12 @@ import (
 	"github.com/pkg/errors"
 )
 
+const latestKubernetesVersion = "v1.7"
+
 func FixApp(app *App) error {
 	var err error
+
+	fixKubernetesVersion(&app.KubernetesVersion)
 
 	// fix app.Services
 	app.Services, err = fixServices(app.Services, app.Name)
@@ -60,6 +64,12 @@ func FixApp(app *App) error {
 	}
 
 	return nil
+}
+
+func fixKubernetesVersion(kVersion *string) {
+	if len(*kVersion) == 0 {
+		*kVersion = latestKubernetesVersion
+	}
 }
 
 func fixServices(services []ServiceSpecMod, appName string) ([]ServiceSpecMod, error) {

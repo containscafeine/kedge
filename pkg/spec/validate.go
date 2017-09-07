@@ -36,7 +36,21 @@ func validateVolumeClaims(vcs []VolumeClaim) error {
 	return nil
 }
 
+func validateKubernetesVersion(kVersion string) error {
+	switch kVersion {
+	case latestKubernetesVersion:
+		return nil
+	default:
+		return fmt.Errorf("unsupported Kubernetes version: %v", kVersion)
+	}
+}
+
 func ValidateApp(app *App) error {
+
+	// validate kubernetesVersion
+	if err := validateKubernetesVersion(app.KubernetesVersion); err != nil {
+		return errors.Wrap(err, "error validating kubernetesVersion")
+	}
 
 	// validate volumeclaims
 	if err := validateVolumeClaims(app.VolumeClaims); err != nil {
